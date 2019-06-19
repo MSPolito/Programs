@@ -1,6 +1,6 @@
 import nltk #this will not work if you haven't installed nltk
 
-def extract_tweets(tweetfile, party, how = 'user'):
+def extract_tweets(tweetfile, how = 'user'):
     #get the tweets out of the file and put them in a dictionary based on
     #a characteristic
     result = {}
@@ -21,31 +21,38 @@ def process_tweet(tweet):
     for i in specialCh:
         tweet.replace(i,"")
     return tweet
-
 def compare_hashes(tweetdict, level = 10):
     hashtags = {}
     currentcont = 0
     for catagory in tweetdict:
-        if level > currentcont:
-            currentcont += 1
             hashes = []
-            print(catagory)
-            for tweet in catagory:
-                print(tweet)
+            for tweet in tweetdict[catagory]:
                 for word in tweet:
                     if word[0] == "#":
                         hashes.append(word)
             if hashes != []:
-                lasthash = sorted(hashes)[0]
+                hashes.sort()
+                lasthash = hashes[0]
                 hashcount = 0
-                catagoryHashes = []
+                tempCatagoryHashes = []
                 for hash in hashes:
                     if hash == lasthash:
                         hashcount +=1
                     else:
-                        catagoryHashes.append((hash, hashcount))
+                        tempCatagoryHashes.append([hashcount, hash])
                         hashcount = 1
                     lasthash = hash
+                tempCatagoryHashes.sort(reverse = True)
+                catagoryHashes = []
+                itemcount = 0
+                for item in tempCatagoryHashes:
+                    if itemcount < level:
+                        catagoryHashes.append(tempCatagoryHashes[itemcount])
+                        itemcount += 1
+                itemcountreverse = 0
+                for item in catagoryHashes:
+                    catagoryHashes[itemcountreverse] = (item[1],item[0])
+                    itemcountreverse +=1
                 hashtags[catagory] = catagoryHashes
     return hashtags
 '''
