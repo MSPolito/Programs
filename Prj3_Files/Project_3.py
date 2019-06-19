@@ -4,14 +4,14 @@ def extract_tweets(tweetfile, party, how = 'user'):
     #get the tweets out of the file and put them in a dictionary based on
     #a characteristic
     result = {}
-    with open(tweetfile,'r') as file:
+    data = {'user':-3,'state':-1,'party':-2}
+    with open(tweetfile,'r', encoding="utf8") as file:
         for line in file:
-            line = process_tweet(line)
-            data = line.split()
-            if data[-3] in result:
-                result[data[-3]].append(tweet)
+            tweet = process_tweet(line).split()
+            if tweet[data[how]] in result:
+                result[tweet[data[how]]].append(tweet)
             else:
-                result[data[-3]] = tweet
+                result[tweet[data[how]]] = [tweet]
         return result
 #above code is unfinished
 def process_tweet(tweet):
@@ -29,22 +29,24 @@ def compare_hashes(tweetdict, level = 10):
         if level > currentcont:
             currentcont += 1
             hashes = []
+            print(catagory)
             for tweet in catagory:
-                tweet = tweet.split()
+                print(tweet)
                 for word in tweet:
                     if word[0] == "#":
                         hashes.append(word)
-            lasthash = sorted(hashes)[0]
-            hashcount = 0
-            catagoryHashes = []
-            for hash in hashes:
-                if hash == lasthash:
-                    hashcount +=1
-                else:
-                    catagoryHashes.append((hash, hashcount))
-                    hashcount = 1
-                lasthash = hash
-            hashtags[catagory] = catagoryHashes
+            if hashes != []:
+                lasthash = sorted(hashes)[0]
+                hashcount = 0
+                catagoryHashes = []
+                for hash in hashes:
+                    if hash == lasthash:
+                        hashcount +=1
+                    else:
+                        catagoryHashes.append((hash, hashcount))
+                        hashcount = 1
+                    lasthash = hash
+                hashtags[catagory] = catagoryHashes
     return hashtags
 '''
 Take in the tweets
