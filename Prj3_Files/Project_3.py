@@ -7,29 +7,53 @@ def extract_tweets(tweetfile, party, how = 'user'):
     with open(tweetfile,'r') as file:
         for line in file:
             line = process_tweet(line)
-            data = {'user': -3, 'party': -2, 'state': -1}
-            if data[how] in result:
-                result[data[how]].append(line)
+            data = line.split()
+            if data[-3] in result:
+                result[data[-3]].append(tweet)
             else:
-                result[data[how]] = line
+                result[data[-3]] = tweet
         return result
 #above code is unfinished
 def process_tweet(tweet):
-    trantab = maketrans('&amp', 'and')
+    trantab = maketrans('%amp', 'and')
     tweet = tweet.lower().translate(trantab)
-    specialch = ',!?.+-$%^Z&*()_|'
-    for i in specialch:
-        tweet.replace(i , '')
+    specialCh = ',!?.+-$%^Z&*()_|'
+    for i in specialCh:
+        tweet.replace(i,"")
     return tweet
-    # pass
 
-def compare_hashes(tweets, level = 10):
-  hashtags = []
-  for word in test_file:
-    state =  testfile[-1:]
-    srtlst = state.sort()
-    hstg = srtlst.find('#')
-    cthstg = hstg.count()
-    tweets = (cthstg, hstg)
-    return(tweets)
+def compare_hashes(tweetdict, level = 10):
+    hashtags = {}
+    currentcont = 0
+    for catagory in tweetdict:
+        if level > currentcont:
+            currentcont += 1
+            hashes = []
+            for tweet in catagory:
+                tweet = tweet.split()
+                for word in tweet:
+                    if word[0] == "#":
+                        hashes.append(word)
+            lasthash = sorted(hashes)[0]
+            hashcount = 0
+            catagoryHashes = []
+            for hash in hashes:
+                if hash == lasthash:
+                    hashcount +=1
+                else:
+                    catagoryHashes.append((hash, hashcount))
+                    hashcount = 1
+                lasthash = hash
+            hashtags[catagory] = catagoryHashes
+    return hashtags
+'''
+Take in the tweets
+find hashtags
+pair with state
+return dict of hashtag counts per how variable
+
+'''
+
+
+print(new_text)
 #     pass
