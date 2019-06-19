@@ -15,9 +15,9 @@ def extract_tweets(tweetfile, party, how = 'user'):
         return result
 #above code is unfinished
 def process_tweet(tweet):
-    trantab = maketrans('%amp', 'and')
-    tweet = tweet.lower().translate(trantab)
+    tweet = tweet.lower()
     specialCh = ',!?.+-$%^Z&*()_|'
+    tweet.replace('&amp;', 'and')
     for i in specialCh:
         tweet.replace(i,"")
     return tweet
@@ -53,7 +53,4 @@ pair with state
 return dict of hashtag counts per how variable
 
 '''
-
-
-print(new_text)
 #     pass
