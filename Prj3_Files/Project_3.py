@@ -55,11 +55,4 @@ def compare_hashes(tweetdict, level = 10):
                     itemcountreverse +=1
                 hashtags[catagory] = catagoryHashes
     return hashtags
-'''
-Take in the tweets
-find hashtags
-pair with state
-return dict of hashtag counts per how variable
-
-'''
 #     pass
